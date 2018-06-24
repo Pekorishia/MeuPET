@@ -1,0 +1,47 @@
+# http://fiware-orion.readthedocs.io/en/0.24.0/user/walkthrough_apiv1/index.html
+
+####################################### Create Context ################################################
+
+(curl <IP_ADDRS>:1026/v1/updateContext -s -S --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' -d @- | python -mjson.tool) <<EOF
+{
+    "contextElements": [
+        { "type": "Ar_Condicionado", "isPattern": "false", "id": "arC1", "attributes": [ {
+"name": "Status", "type": "Boolean", "value": "true" }, { "name": "Temperatura",
+"type": "Int", "value": "24" } ] }
+    ],
+    "updateAction": "APPEND"
+} 
+EOF
+
+
+####################################### subscribeContext ################################################
+
+(curl <IP_ADDRS>:1026/v1/subscribeContext -s -S --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' -d @- | python -mjson.tool) <<EOF
+{ "entities": [ { "isPattern": "false", "id": "arC1", "type": "Ar_Condicionado" } ],
+"attributes": [ "Temperatura" ], "reference": "http://192.168.0.107:8080/AirControl/air-control",
+"duration": "P1M", "notifyConditions": [ { "type": "ONCHANGE" } ], "throttling":
+"PT5S" }
+EOF
+
+
+
+####################################### updateContext ################################################
+
+(curl <IP_ADDRS>:1026/v1/updateContext -s -S --header 'Content-Type: application/json' \
+     --header 'Accept: application/json' -d @- | python -mjson.tool) <<EOF
+{ "contextElements": [ { "type": "Ar_Condicionado", "isPattern": "false", "id": "arC1",
+"attributes": [ { "name": "Status", "type": "Boolean", "value": "true" }, { "name":
+"Temperatura", "type": "Int", "value": "20" } ] } ], "updateAction": "UPDATE" }
+EOF
+
+
+
+####################################### Para Deletar Subscription ################################################
+##### Consulta ID ####
+http://<IP_ADDRS>:1026/v2/subscriptions
+##### Deleta ####
+curl -X "DELETE" <IP_ADDRS>:1026/v1/contextSubscriptions/<ID_SUBSCRIPTION>
+
+
