@@ -1,6 +1,6 @@
 package com.fepa.meupet;
 
-
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_data;
     private Button bt_connect;
 
-    RequestQueue queue;
+    private RequestQueue queue;
+
+    private StringRequest stringRequest;
+
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         this.tv_data = findViewById(R.id.tv_data);
         this.bt_connect = findViewById(R.id.bt_connect);
 
+        handler = new Handler();
+
         bt_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,26 +53,39 @@ public class MainActivity extends AppCompatActivity {
                     url = "http://" + ed_ip.getText().toString();
                 }
 
-                // Request a string response from the provided URL
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                tv_data.setText(response);
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                tv_data.setText("That didn't work!" + error.getCause());
-                            }
-                        }
-                );
-
-                queue.add(stringRequest);
+                initLoop(url);
             }
         });
 
+    }
+
+    private void initLoop(String url) {
+        stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                                tv_data.setText(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        tv_data.setText("That didn't work!" + error.getCause());
+                    }
+                }
+        );
+
+        handler.post(new Runnable() {
+            int i = 0;
+
+            @Override
+            public void run() {
+                handler.postDelayed(this, 5000);
+                queue.add(stringRequest);
+                tv_data.setText(""+i++);
+//              Toast.makeText(getApplicationContext(), (i++)+"", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }
