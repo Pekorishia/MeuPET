@@ -14,6 +14,8 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import com.fepa.rest.Rest;
+
 
 public class AirControlServlet extends HttpServlet {
 
@@ -22,7 +24,7 @@ public class AirControlServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
+		System.out.println("Do nothing");
 		//Do nothing
 	}
 
@@ -31,22 +33,22 @@ public class AirControlServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		String json = getBody(req);
-
-//		AirConditioner airC;
+//		System.out.println(json);
+//		System.out.println("...");
+//		Coleira coleira;
 		try {
-			@SuppressWarnings("unused")
-			AirConditioner airC = getContextEntity(json);
-			
-			System.out.println(json);
-			
+			Rest.coleira = getContextEntity(json);
+			System.out.println(Rest.coleira.toString());
 		} catch (Exception  e) {
 			e.printStackTrace();
+			System.err.println(json);
 		}
 
 	}
 	
-	private AirConditioner getContextEntity(String json) throws JSONException{
-		AirConditioner airC = new AirConditioner();
+	
+	private Coleira getContextEntity(String json) throws JSONException{
+		Coleira coleira = new Coleira();
 
 		JSONObject jsonObj = new JSONObject(json);
 
@@ -57,7 +59,7 @@ public class AirControlServlet extends HttpServlet {
 		JSONObject contextElement = contextResponses.getJSONObject(0)
 				.getJSONObject("contextElement");
 		
-		airC.setId(contextElement.getString("id"));
+		coleira.setId(contextElement.getString("id"));
 
 		JSONArray attributes = contextElement.getJSONArray("attributes");
 
@@ -65,14 +67,14 @@ public class AirControlServlet extends HttpServlet {
 
 			JSONObject att = attributes.getJSONObject(i);
 			
-			if (att.getString("name").equalsIgnoreCase("Status")){
-				airC.setOn(Boolean.parseBoolean(att.getString("value")));
+			if (att.getString("name").equalsIgnoreCase("Umidade")){
+				coleira.setUmidade(Integer.parseInt(att.getString("value")));
 			}else if (att.getString("name").equalsIgnoreCase("Temperatura")){
-				airC.setTemperatura(Integer.parseInt(att.getString("value")));
+				coleira.setTemperatura(Integer.parseInt(att.getString("value")));
 			}
 		}
 
-		return airC;
+		return coleira;
 	}
 
 	public static String getBody(HttpServletRequest request) throws IOException {

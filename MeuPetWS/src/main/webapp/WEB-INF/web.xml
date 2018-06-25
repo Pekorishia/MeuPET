@@ -10,7 +10,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>Air Control Servlet</servlet-name>
-    <url-pattern>/air-control</url-pattern>
+    <url-pattern>/receive</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>jersey-serlvet</servlet-name>

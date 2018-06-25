@@ -1,0 +1,48 @@
+# http://fiware-orion.readthedocs.io/en/0.24.0/user/walkthrough_apiv1/index.html
+
+####################################### Create Context ################################################
+
+(curl localhost:1026/v1/updateContext -s -S --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' -d @- | python -mjson.tool) <<EOF
+{
+    "contextElements": [
+        { "type": "Coleira", "isPattern": "false", "id": "c1", "attributes": [ {
+"name": "Umidade", "type": "Int", "value": "80" }, { "name": "Temperatura",
+"type": "Int", "value": "24" } ] }
+    ],
+    "updateAction": "APPEND"
+} 
+EOF
+
+
+####################################### subscribeContext ################################################
+
+(curl localhost:1026/v1/subscribeContext -s -S --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' -d @- | python -mjson.tool) <<EOF
+{ "entities": [ { "isPattern": "false", "id": "c1", "type": "Coleira" } ],
+"attributes": [ "Temperatura" ], "reference": "http://localhost:8080/MeuPetWS/receive",
+"duration": "P1M", "notifyConditions": [ { "type": "ONCHANGE" } ], "throttling":
+"PT5S" }
+EOF
+
+
+
+####################################### updateContext ################################################
+
+(curl localhost:1026/v1/updateContext -s -S --header 'Content-Type: application/json' \
+     --header 'Accept: application/json' -d @- | python -mjson.tool) <<EOF
+{ "contextElements": [ { "type": "Coleira", "isPattern": "false", "id": "c1",
+"attributes": [ { "name": "Umidade", "type": "Int", "value": "30" }, { "name":
+"Temperatura", "type": "Int", "value": "20" } ] } ], "updateAction": "UPDATE" }
+EOF
+
+
+
+####################################### Para Deletar Subscription ################################################
+##### Consulta ID ####
+http://localhost:1026/v2/subscriptions
+##### Deleta ####
+curl -X "DELETE" localhost:1026/v1/contextSubscriptions/<ID_SUBSCRIPTION>
+
+
+

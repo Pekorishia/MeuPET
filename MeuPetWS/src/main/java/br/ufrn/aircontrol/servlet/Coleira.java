@@ -1,12 +1,12 @@
 package br.ufrn.aircontrol.servlet;
 
-public class AirConditioner {
+public class Coleira {
 	
 	String id;
 	int temperatura;
-	boolean on;
+	int umidade;
 
-	public AirConditioner() {
+	public Coleira() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -26,19 +26,23 @@ public class AirConditioner {
 		this.temperatura = temperatura;
 	}
 
-	public boolean isOn() {
-		return on;
-	}
-
-	public void setOn(boolean status) {
-		this.on = status;
-	}
-
 	@Override
 	public String toString() {
-		return "AirConditioner [id=" + id + ", temperatura=" + temperatura
-				+ ", status=" + on + "]";
+		//TODO Alterar para JSON
+		return "Coleira [id=" + id + ", temperatura=" + temperatura + ", umidade=" + umidade + "]";
 	}
+
+	public int getUmidade() {
+		return umidade;
+	}
+
+	public void setUmidade(int umidade) {
+		this.umidade = umidade;
+	}
+
+	
+	
+	
 	
 	
 
