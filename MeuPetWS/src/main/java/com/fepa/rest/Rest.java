@@ -19,13 +19,22 @@ import org.codehaus.jettison.json.JSONObject;
 
 import com.fepa.servlet.Coleira;
 
+//import floodlight.orion.listsubs.App;
+
 @Path("/")
 public class Rest {
 	
 	static String id = null;
 	public static Coleira coleira = null;
 	public static String myIP = "10.9.100.132";
-	static int count_init = 0;
+	public static String ORION_IP = "localhost";
+	
+//	static {
+//		App.delete(ORION_IP);
+//	}
+	
+	
+//	static int count_init = 0;
 
 	// http://10.9.100.132:8080/MeuPetWS/rest/update
 	@GET
