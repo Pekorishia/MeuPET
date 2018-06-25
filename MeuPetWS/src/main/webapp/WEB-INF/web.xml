@@ -5,11 +5,11 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
   <servlet>
-    <servlet-name>Air Control Servlet</servlet-name>
-    <servlet-class>br.ufrn.aircontrol.servlet.AirControlServlet</servlet-class>
+    <servlet-name>Coleira Servlet</servlet-name>
+    <servlet-class>com.fepa.servlet.ColeiraServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Air Control Servlet</servlet-name>
+    <servlet-name>Coleira Servlet</servlet-name>
     <url-pattern>/receive</url-pattern>
   </servlet-mapping>
   <servlet>

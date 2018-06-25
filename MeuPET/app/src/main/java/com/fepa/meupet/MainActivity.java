@@ -46,12 +46,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String url = "";
+                String ip = "";
                 if (ed_ip.getText().toString().equals("IP")) {
-                    url = "http://google.com";
+                    ip = "10.9.100.132";
                 } else {
-                    url = "http://" + ed_ip.getText().toString();
+                    ip = ed_ip.getText().toString();
                 }
+                String url = "http://"+ip+":8080/MeuPetWS/rest/update";
+
+                queue.add(new StringRequest(Request.Method.GET, "http://"+ip+":8080/MeuPetWS/rest/subscribe?idEntity=c1",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                tv_data.setText(response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                tv_data.setText("That didn't work!" + error.getCause());
+                            }
+                        }
+                ));
 
                 initLoop(url);
             }
@@ -59,12 +75,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private void initLoop(String url) {
         stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                                tv_data.setText(response);
+                        tv_data.setText(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -76,13 +93,11 @@ public class MainActivity extends AppCompatActivity {
         );
 
         handler.post(new Runnable() {
-            int i = 0;
 
             @Override
             public void run() {
                 handler.postDelayed(this, 5000);
                 queue.add(stringRequest);
-                tv_data.setText(""+i++);
 //              Toast.makeText(getApplicationContext(), (i++)+"", Toast.LENGTH_LONG).show();
             }
         });

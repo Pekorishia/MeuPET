@@ -1,4 +1,4 @@
-package br.ufrn.aircontrol.servlet;
+package com.fepa.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import org.codehaus.jettison.json.JSONObject;
 import com.fepa.rest.Rest;
 
 
-public class AirControlServlet extends HttpServlet {
+public class ColeiraServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class AirControlServlet extends HttpServlet {
 //		Coleira coleira;
 		try {
 			Rest.coleira = getContextEntity(json);
-			System.out.println(Rest.coleira.toString());
+			System.out.println("Orion update: "+Rest.coleira.toString());
 		} catch (Exception  e) {
 			e.printStackTrace();
 			System.err.println(json);

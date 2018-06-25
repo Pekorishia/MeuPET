@@ -17,22 +17,25 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import br.ufrn.aircontrol.servlet.Coleira;
+import com.fepa.servlet.Coleira;
 
 @Path("/")
 public class Rest {
 	
 	static String id = null;
 	public static Coleira coleira = null;
-
+	public static String myIP = "10.9.100.132";
 	static int count_init = 0;
 
-	// http://localhost:8080/MeuPetWS/rest/update
+	// http://10.9.100.132:8080/MeuPetWS/rest/update
 	@GET
 	@Path("/update")
 	public String update() {
-		if(coleira != null)
+		if(coleira != null) {
+			System.out.println("Client Request: "+coleira.toString());
 			return coleira.toString();
+		}
+		System.out.println("Coleira null");
 		return "";
 
 	}
@@ -46,7 +49,7 @@ public class Rest {
 //	}
 	
 	
-	// http://localhost:8080/MeuPetWS/rest/subscribe?idEntity=c1
+	// http://10.9.100.132:8080/MeuPetWS/rest/subscribe?idEntity=c1
 	@GET
 	@Path("/subscribe")
 	public String subscribe(@QueryParam("idEntity") String idEntity) {
@@ -96,7 +99,7 @@ public class Rest {
 
 		String data = "{ \"entities\": [ { \"isPattern\": \"false\", \"id\": \""+idEntity+"\", \"type\": \"Coleira\" } ],\n" + 
 				"		 \"attributes\": [ \"Temperatura\",\"Umidade\" ], \"reference\":\n" + 
-				"		 \"http://192.168.0.102:8080/MeuPetWS/receive\",\n" + 
+				"		 \"http://"+myIP+":8080/MeuPetWS/receive\",\n" + 
 				"		 \"duration\": \"P1M\", \"notifyConditions\": [ { \"type\": \"ONCHANGE\" } ],\n" + 
 				"		 \"throttling\":\n" + 
 				"		 \"PT5S\" }";
@@ -132,32 +135,9 @@ public class Rest {
 	}
 	
 	private String getID(String json) throws JSONException{
-//		Coleira coleira = new Coleira();
-
 		JSONObject jsonObj = new JSONObject(json);
-
-//		JSONArray contextResponses = jsonObj
-//				.getJSONArray("contextResponses");
-		
-
 		JSONObject subscribeResponse = jsonObj.getJSONObject("subscribeResponse");
-		
 		String id = subscribeResponse.getString("subscriptionId");
-		
-//		coleira.setId(contextElement.getString("id"));
-
-//		JSONArray attributes = subscribeResponse.getJSONArray("attributes");
-
-//		for (int i = 0; i < attributes.length(); i++) {
-//
-//			JSONObject att = attributes.getJSONObject(i);
-//			
-//			if (att.getString("name").equalsIgnoreCase("Umidade")){
-//				coleira.setUmidade(Integer.parseInt(att.getString("value")));
-//			}else if (att.getString("name").equalsIgnoreCase("Temperatura")){
-//				coleira.setTemperatura(Integer.parseInt(att.getString("value")));
-//			}
-//		}
 
 		return id;
 	}
