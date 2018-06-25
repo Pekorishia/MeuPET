@@ -16,11 +16,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText ed_ip;
-    private TextView tv_data;
+    private TextView tv_id, tv_temp, tv_humidity;
     private Button bt_connect;
 
     private RequestQueue queue;
@@ -37,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(MainActivity.this);
 
         this.ed_ip = findViewById(R.id.et_ip);
-        this.tv_data = findViewById(R.id.tv_data);
+        this.tv_humidity = findViewById(R.id.tv_humidity);
+        this.tv_id = findViewById(R.id.tv_id);
+        this.tv_temp = findViewById(R.id.tv_temp);
         this.bt_connect = findViewById(R.id.bt_connect);
 
         handler = new Handler();
@@ -58,13 +63,19 @@ public class MainActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                tv_data.setText(response);
+//                                tv_data.setText(response);
+                                tv_humidity.setText("Umidade : 0");
+                                tv_id.setText("ID : 0");
+                                tv_temp.setText("Temperatura : 0");
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                tv_data.setText("That didn't work!" + error.getCause());
+//                                tv_data.setText("That didn't work!" + error.getCause());
+                                tv_humidity.setText("Umidade : ERROR!");
+                                tv_id.setText("ID : ERROR!");
+                                tv_temp.setText("Temperatura : ERROR!");
                             }
                         }
                 ));
@@ -81,13 +92,34 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        tv_data.setText(response);
+                        int temp, humidity;
+                        String id;
+//                        tv_data.setText(response);
+
+                        try {
+                            JSONObject obj = new JSONObject(response);
+
+                            JSONObject coleira = obj.getJSONObject("Coleira");
+                            id = coleira.getString("id");
+                            temp = coleira.getInt("temperature");
+                            humidity = coleira.getInt("humidity");
+
+                            tv_humidity.setText("Umidade : "+ humidity);
+                            tv_id.setText("ID : " + id);
+                            tv_temp.setText("Temperatura : " + temp);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        tv_data.setText("That didn't work!" + error.getCause());
+//                        tv_data.setText("That didn't work!" + error.getCause());
+                        tv_humidity.setText("Umidade : ERROR!");
+                        tv_id.setText("ID : ERROR!");
+                        tv_temp.setText("Temperatura : ERROR!");
                     }
                 }
         );

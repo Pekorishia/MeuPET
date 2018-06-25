@@ -32,10 +32,31 @@
                 android:text="Connect" />
 
             <TextView
-                android:id="@+id/tv_data"
+                android:id="@+id/tv_id"
                 android:layout_width="match_parent"
-                android:layout_height="98dp"
-                android:text="TextView" />
+                android:layout_height="wrap_content"
+                android:height="18dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="ID : " />
+
+            <TextView
+                android:id="@+id/tv_temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:height="18dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Temperatura : " />
+
+            <TextView
+                android:id="@+id/tv_humidity"
+                android:layout_width="match_parent"
+                android:height="18dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:text="Umidade : " />
         </LinearLayout>
     </ScrollView>
 

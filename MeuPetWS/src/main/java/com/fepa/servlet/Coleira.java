@@ -29,7 +29,8 @@ public class Coleira {
 	@Override
 	public String toString() {
 		//TODO Alterar para JSON
-		return "Coleira [id=" + id + ", temperatura=" + temperatura + ", umidade=" + umidade + "]";
+//		return "Coleira [id=" + id + ", temperatura=" + temperatura + ", umidade=" + umidade + "]";
+		return "{\"Coleira\": { \"id\": \""+id+"\", \"temperature\": "+ temperatura+", \"humidity\": "+umidade+"}}";
 	}
 
 	public int getUmidade() {
